@@ -16,6 +16,12 @@ let url = "https://www.nytimes.com/svc/connections/v2/" + urlDate + ".json";
 let gameCategories = [];
 let gameWords = [];
 
+//keep track if the user has gotten a hint before
+let gotPrevHint = false;
+
+//create a count to always keep track of how many hints were used
+let count = 0;
+
 //import the json
 fetch(url).then((response) => response.json()).then((json) => {
     for(const category of json.categories){
@@ -30,29 +36,30 @@ fetch(url).then((response) => response.json()).then((json) => {
     }
 });
 
+//get the element for the button to start the game
+const playButton = document.querySelector("[data-testid='moment-btn-play']");
+
+//only try to add the new button once the game starts
+playButton.addEventListener("click", addHintButton);
+
 //add the hint button to the webpage
-//select the existing button element
-const shuffleButton = document.querySelector('[data-testid="shuffle-btn"]');
+function addHintButton(){
+    //select the existing button element
+    const shuffleButton = document.querySelector("[data-testid='shuffle-btn']");
 
-//create a new button element
-const hintButton = document.createElement('button');
+    //create a new button element
+    const hintButton = document.createElement('button');
 
-//set attributes for the new button
-hintButton.setAttribute('type', 'button');
-hintButton.setAttribute('class', 'ActionButton-module_button__IlhXt');
-hintButton.setAttribute('style', 'background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border-color: rgb(0, 0, 0);');
-hintButton.textContent = 'Hint';
-hintButton.addEventListener("click", getHint);
+    //set attributes for the new button
+    hintButton.setAttribute('type', 'button');
+    hintButton.setAttribute('class', 'ActionButton-module_button__IlhXt');
+    hintButton.setAttribute('style', 'background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border-color: rgb(0, 0, 0);');
+    hintButton.textContent = 'Hint';
+    hintButton.addEventListener("click", getHint);
 
-//insert the new button next to the existing button
-shuffleButton.parentNode.insertBefore(hintButton, shuffleButton.nextSibling);
-
-//keep track of if the user already got a hint previously
-let gotPrevHint = false;
-
-//create count to always keep track of how mnay hints used
-let count = 0;
-
+    //insert the new button next to the existing button
+    shuffleButton.parentNode.insertBefore(hintButton, shuffleButton.nextSibling);
+}
 
 
 
